@@ -261,8 +261,11 @@ export default class AutoLinkTitle extends Plugin {
 
   async convertUrlToTitledLink(editor: Editor, url: string): Promise<void> {
     if (await this.isBlacklisted(url)) {
-      let domain = new URL(url).hostname;
-      editor.replaceSelection(`[${domain}](${url})`);
+      let title = new URL(url).hostname;
+      if (/(^|\.)instagram.com/i.test(title)) {
+        title = 'Instagram';
+      }
+      editor.replaceSelection(`[${title}](${url})`);
       return;
     }
 
@@ -420,4 +423,5 @@ export default class AutoLinkTitle extends Plugin {
     await this.saveData(this.settings);
   }
 }
+
 
